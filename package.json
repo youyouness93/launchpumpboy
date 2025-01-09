@@ -4,7 +4,8 @@
   "description": "PumpBoy Launch Page with PostgreSQL storage",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "vercel-build": "node db/init.js"
   },
   "dependencies": {
     "@vercel/postgres": "^0.10.0",
