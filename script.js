@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             try {
                 // Save wallet address
-                const response = await fetch('/api/wallets', {
+                const response = await fetch('https://launchpumpboy.vercel.app/api/wallets', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
