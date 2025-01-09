@@ -19,9 +19,24 @@
             border-radius: 8px;
             box-shadow: 0 0 10px #0f0;
         }
-        pre {
-            white-space: pre-wrap;
-            word-wrap: break-word;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #0f0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #0f0;
+            color: #000;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
             padding: 10px;
             background-color: #222;
             border-radius: 4px;
@@ -31,25 +46,79 @@
 <body>
     <div class="container">
         <h1>🤖 PumpBoy Wallets</h1>
-        <pre id="walletData">Loading...</pre>
+        <div class="stats">
+            <div>Total Wallets: <span id="totalWallets">-</span></div>
+            <div>Last Updated: <span id="lastUpdated">-</span></div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Wallet Address</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="walletsTable">
+                <tr>
+                    <td colspan="3">Loading...</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script>
-        // Fonction pour charger le contenu du fichier wallets.json
+        // Fonction pour charger le contenu des wallets depuis l'API
         async function loadWallets() {
             try {
-                const response = await fetch('wallets.json');
-                const wallets = await response.json();
-                document.getElementById('walletData').textContent = 
-                    JSON.stringify(wallets, null, 2);
+                const response = await fetch('https://launchpumpboy.vercel.app/api/wallets');
+                const data = await response.json();
+                const wallets = data.wallets || [];
+                
+                // Mettre à jour les statistiques
+                document.getElementById('totalWallets').textContent = wallets.length;
+                document.getElementById('lastUpdated').textContent = new Date().toLocaleString();
+
+                // Vider le tableau
+                const tbody = document.getElementById('walletsTable');
+                tbody.innerHTML = '';
+
+                // Remplir le tableau avec les wallets
+                wallets.forEach((wallet, index) => {
+                    const row = document.createElement('tr');
+                    const timestamp = new Date(wallet.timestamp).toLocaleString();
+                    
+                    row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${wallet.address}</td>
+                        <td>${timestamp}</td>
+                    `;
+                    
+                    tbody.appendChild(row);
+                });
+
+                if (wallets.length === 0) {
+                    tbody.innerHTML = `
+                        <tr>
+                            <td colspan="3" style="text-align: center;">
+                                No wallets registered yet
+                            </td>
+                        </tr>
+                    `;
+                }
             } catch (error) {
-                document.getElementById('walletData').textContent = 
-                    'Error loading wallets: ' + error.message;
+                document.getElementById('walletsTable').innerHTML = `
+                    <tr>
+                        <td colspan="3" style="color: red; text-align: center;">
+                            Error loading wallets: ${error.message}
+                        </td>
+                    </tr>
+                `;
             }
         }
 
-        // Charger les wallets au chargement de la page
+        // Charger les wallets au chargement de la page et toutes les 30 secondes
         loadWallets();
+        setInterval(loadWallets, 30000);
     </script>
 </body>
 </html>
