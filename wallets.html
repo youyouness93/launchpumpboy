@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PumpBoy Wallets</title>
+    <style>
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #000;
+            color: #0f0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background-color: #111;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #0f0;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            padding: 10px;
+            background-color: #222;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 PumpBoy Wallets</h1>
+        <pre id="walletData">Loading...</pre>
+    </div>
+
+    <script>
+        // Fonction pour charger le contenu du fichier wallets.json
+        async function loadWallets() {
+            try {
+                const response = await fetch('wallets.json');
+                const wallets = await response.json();
+                document.getElementById('walletData').textContent = 
+                    JSON.stringify(wallets, null, 2);
+            } catch (error) {
+                document.getElementById('walletData').textContent = 
+                    'Error loading wallets: ' + error.message;
+            }
+        }
+
+        // Charger les wallets au chargement de la page
+        loadWallets();
+    </script>
+</body>
+</html>
