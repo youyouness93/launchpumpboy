@@ -1,5 +1,5 @@
 // Set the launch date (January 18, 2025 at 12:00)
-const launchDate = new Date('2025-01-18T12:00:00-05:00');
+const launchDate = new Date('2025-01-10T16:00:00-05:00');
 
 // Update countdown
 function updateCountdown() {
