@@ -111,6 +111,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Sound toggle button
     soundToggle.addEventListener('click', toggleSound);
 
+    // Info modal functionality
+    const infoButton = document.querySelector('.d-pad .fa-info');
+    const infoModal = document.getElementById('infoModal');
+    const closeBtn = document.querySelector('#infoModal .close-btn');
+
+    if (infoButton && infoModal) {
+        infoButton.addEventListener('click', function() {
+            infoModal.style.display = 'block';
+        });
+
+        // Close button click
+        if (closeBtn) {
+            closeBtn.addEventListener('click', function() {
+                infoModal.style.display = 'none';
+            });
+        }
+
+        // Click outside to close
+        window.addEventListener('click', function(e) {
+            if (e.target === infoModal) {
+                infoModal.style.display = 'none';
+            }
+        });
+    }
+
     // Handle wallet submission
     const form = document.getElementById('subscribe-form');
     if (form) {
