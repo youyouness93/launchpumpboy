@@ -1,0 +1,381 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+    --neon-green: #39ff14;
+    --dark-bg: #000;
+    --screen-green: #98fb98;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Press Start 2P', cursive;
+    background: var(--dark-bg);
+    color: var(--neon-green);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.matrix-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: #000;
+    overflow: hidden;
+}
+
+.matrix-line {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    animation: matrixRain linear infinite;
+    font-family: monospace;
+}
+
+@keyframes matrixRain {
+    0% {
+        transform: translateY(-100%);
+    }
+    100% {
+        transform: translateY(100vh);
+    }
+}
+
+.container {
+    padding: 20px;
+}
+
+.game-boy {
+    background: #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--neon-green);
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.screen {
+    background: var(--screen-green);
+    padding: 20px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    color: #000;
+    text-align: center;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+    text-shadow: -1px -1px 0 #000,  
+                 1px -1px 0 #000,
+                 -1px 1px 0 #000,
+                 1px 1px 0 #000;
+    color: var(--neon-green);
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 1em;
+    margin-bottom: 30px;
+    color: #000;
+}
+
+.countdown {
+    display: flex;
+    justify-content: space-around;
+    margin: 30px 0;
+}
+
+.time-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-block span {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.label {
+    font-size: 0.6em;
+}
+
+.cta {
+    margin-top: 30px;
+}
+
+.cta p {
+    margin-bottom: 15px;
+    font-size: 0.8em;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input {
+    padding: 10px;
+    font-family: 'Press Start 2P', cursive;
+    border: 2px solid #000;
+    background: #fff;
+    text-align: center;
+}
+
+button {
+    padding: 10px 20px;
+    font-family: 'Press Start 2P', cursive;
+    background: var(--neon-green);
+    border: none;
+    color: #000;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #000;
+    color: var(--neon-green);
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.d-pad {
+    width: 80px;
+    height: 80px;
+    background: #333;
+    position: relative;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.d-pad i {
+    color: var(--neon-green);
+    font-size: 24px;
+    transition: transform 0.3s ease;
+}
+
+.d-pad:hover {
+    background: #444;
+}
+
+.d-pad:hover i {
+    transform: scale(1.2);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 20px;
+}
+
+.button {
+    width: 40px;
+    height: 40px;
+    background: var(--neon-green);
+    border-radius: 50%;
+}
+
+.social-container {
+    margin: 20px 0;
+    text-align: center;
+}
+
+.social-container p {
+    font-size: 0.8em;
+    margin-bottom: 10px;
+    color: #000;
+}
+
+.social-link {
+    display: inline-block;
+    color: var(--neon-green);
+    font-size: 28px;
+    text-decoration: none;
+    transition: transform 0.3s ease, color 0.3s ease;
+    background: #000;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.social-link:hover {
+    transform: scale(1.1);
+    color: #fff;
+}
+
+.social-link i {
+    text-shadow: 0 0 5px var(--neon-green);
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 9999;
+    overflow-y: auto;
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: #000;
+    margin: 50px auto;
+    padding: 30px;
+    max-width: 800px;
+    border: 2px solid var(--neon-green);
+    border-radius: 10px;
+    box-shadow: 0 0 20px var(--neon-green);
+    position: relative;
+    color: #fff;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    cursor: pointer;
+    color: var(--neon-green);
+}
+
+.close-btn:hover {
+    color: #fff;
+}
+
+.modal h2 {
+    color: var(--neon-green);
+    font-size: 2em;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal h3 {
+    color: var(--neon-green);
+    font-size: 1.5em;
+    margin: 30px 0 20px;
+}
+
+.modal-section {
+    margin: 20px 0;
+}
+
+.description p {
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.phase {
+    margin: 25px 0;
+    padding: 15px;
+    border: 1px solid var(--neon-green);
+    border-radius: 5px;
+    background: rgba(57, 255, 20, 0.05);
+}
+
+.phase h4 {
+    color: var(--neon-green);
+    margin-bottom: 10px;
+}
+
+.phase ul {
+    list-style: none;
+    padding-left: 20px;
+}
+
+.phase li {
+    margin: 10px 0;
+    position: relative;
+}
+
+.phase li:before {
+    content: ">";
+    color: var(--neon-green);
+    position: absolute;
+    left: -20px;
+}
+
+.modal-footer {
+    margin-top: 30px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid rgba(57, 255, 20, 0.3);
+}
+
+.twitter-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: rgba(57, 255, 20, 0.1);
+    border: 1px solid var(--neon-green);
+    border-radius: 50px;
+    color: var(--neon-green);
+    text-decoration: none;
+    font-size: 1.1em;
+    transition: all 0.3s ease;
+}
+
+.twitter-link:hover {
+    background: var(--neon-green);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.twitter-link i {
+    font-size: 1.2em;
+}
+
+@media (max-width: 600px) {
+    .game-boy {
+        width: 100%;
+    }
+    
+    .countdown {
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+    
+    h1 {
+        font-size: 1.2em;
+    }
+    
+    .modal-content {
+        margin: 20px;
+        padding: 20px;
+    }
+}

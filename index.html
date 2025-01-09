@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUMPBOY</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+    <div class="matrix-bg"></div>
+    <div class="container">
+        <div class="game-boy">
+            <div class="screen">
+                <h1>PUMPBOY</h1>
+                <div class="subtitle">LAUNCHING SOON</div>
+                <div class="countdown">
+                    <div class="time-block">
+                        <span id="days">00</span>
+                        <span class="label">DAYS</span>
+                    </div>
+                    <div class="time-block">
+                        <span id="hours">00</span>
+                        <span class="label">HRS</span>
+                    </div>
+                    <div class="time-block">
+                        <span id="minutes">00</span>
+                        <span class="label">MIN</span>
+                    </div>
+                    <div class="time-block">
+                        <span id="seconds">00</span>
+                        <span class="label">SEC</span>
+                    </div>
+                </div>
+                <div class="social-container">
+                    <p>FOLLOW US:</p>
+                    <a href="https://x.com/PumpBoyOnSol" target="_blank" class="social-link">
+                        <i class="fab fa-x-twitter"></i>
+                    </a>
+                </div>
+                <div class="cta">
+                    <p>PRESS START TO SUBSCRIBE</p>
+                    <form id="subscribe-form">
+                        <input type="email" placeholder="YOUR EMAIL" required>
+                        <button type="submit">START</button>
+                    </form>
+                </div>
+            </div>
+            <div class="controls">
+                <div class="d-pad">
+                    <i class="fas fa-info"></i>
+                </div>
+                <div class="action-buttons">
+                    <div class="button a"></div>
+                    <div class="button b"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="infoModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>About PumpBoy</h2>
+            
+            <div class="modal-section description">
+                <p>PumpBoy is a retro-futuristic tool designed to transform how users explore, track, and analyze new tokens created on Pump.fun. Combining nostalgic design with cutting-edge blockchain technology, PumpBoy offers a unique, fun, and intuitive way to discover the next big opportunities in crypto.</p>
+            </div>
+
+            <div class="modal-section roadmap">
+                <h3>Roadmap</h3>
+                <div class="phase">
+                    <h4>Phase 1: Launch 🚀</h4>
+                    <ul>
+                        <li>Launch PumpBoy with core features, including token exploration, filtering by age, market cap, and supply.</li>
+                        <li>Integrate Pump.fun API for real-time data fetching.</li>
+                    </ul>
+                </div>
+                <div class="phase">
+                    <h4>Phase 2: Advanced Analytics 📊</h4>
+                    <ul>
+                        <li>Introduce analytics modules, including price trends, trading volumes, and token popularity metrics.</li>
+                        <li>Allow users to create custom filters and save preferences.</li>
+                    </ul>
+                </div>
+                <div class="phase">
+                    <h4>Phase 3: Multi-Chain Expansion 🌐</h4>
+                    <ul>
+                        <li>Expand PumpBoy to support multi-chain ecosystems (e.g., Ethereum, Binance Smart Chain, Solana).</li>
+                        <li>Add tools to monitor token performance across multiple blockchains.</li>
+                    </ul>
+                </div>
+                <div class="phase">
+                    <h4>Phase 4: Community & Gamification 🎮</h4>
+                    <ul>
+                        <li>Launch gamified features such as achievements and rewards for active users.</li>
+                        <li>Build a community through a dedicated DAO for governance and decision-making.</li>
+                    </ul>
+                </div>
+                <div class="phase">
+                    <h4>Phase 5: Integration with GameFi & NFT 🌟</h4>
+                    <ul>
+                        <li>Introduce NFT tracking and GameFi-related analytics for gamers and investors.</li>
+                        <li>Partner with GameFi projects to provide exclusive insights and tools.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <a href="https://x.com/PumpBoyOnSol" target="_blank" class="twitter-link">
+                    <i class="fab fa-x-twitter"></i>
+                    <span>Follow us on X</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
