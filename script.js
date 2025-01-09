@@ -113,37 +113,23 @@ document.addEventListener('DOMContentLoaded', function() {
     soundToggle.addEventListener('click', toggleSound);
 
     // Info modal functionality
-    const infoButton = document.querySelector('.d-pad .fa-info');
+    const infoButton = document.querySelector('.d-pad');
     const infoModal = document.getElementById('infoModal');
     const closeBtn = document.querySelector('#infoModal .close-btn');
 
-    if (infoButton && infoModal) {
-        infoButton.addEventListener('click', function() {
-            console.log('Info button clicked'); // Debug log
-            infoModal.style.display = 'block';
-        });
+    infoButton.addEventListener('click', function() {
+        infoModal.style.display = 'block';
+    });
 
-        // Close button click
-        if (closeBtn) {
-            closeBtn.addEventListener('click', function() {
-                console.log('Close button clicked'); // Debug log
-                infoModal.style.display = 'none';
-            });
+    closeBtn.addEventListener('click', function() {
+        infoModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', function(e) {
+        if (e.target === infoModal) {
+            infoModal.style.display = 'none';
         }
-
-        // Click outside to close
-        window.addEventListener('click', function(e) {
-            if (e.target === infoModal) {
-                console.log('Clicked outside modal'); // Debug log
-                infoModal.style.display = 'none';
-            }
-        });
-    } else {
-        console.log('Info button or modal not found:', { 
-            infoButton: !!infoButton, 
-            infoModal: !!infoModal 
-        }); // Debug log
-    }
+    });
 
     // Handle wallet submission
     const form = document.getElementById('subscribe-form');
