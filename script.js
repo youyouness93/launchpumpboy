@@ -61,6 +61,13 @@ function createMatrixRain() {
     });
 }
 
+// Initialize page
+function initializePage() {
+    // Start countdown and matrix effect
+    setInterval(updateCountdown, 1000);
+    createMatrixRain();
+}
+
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     const enterModal = document.getElementById('enterModal');
@@ -158,7 +165,3 @@ if (form) {
         this.reset();
     });
 }
-
-// Start countdown and matrix effect
-setInterval(updateCountdown, 1000);
-createMatrixRain();
