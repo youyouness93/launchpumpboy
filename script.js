@@ -79,50 +79,20 @@ document.addEventListener('DOMContentLoaded', function() {
     let isMuted = false;
 
     // Enter button click handler
-    enterButton.addEventListener('click', async function() {
-        // Get wallet address from input
-        const walletInput = document.getElementById('walletInput');
-        const wallet = walletInput.value;
-
-        if (!wallet) {
-            alert('Please enter your wallet address');
-            return;
-        }
-
-        try {
-            // Save wallet to database
-            const response = await fetch('/api/wallets', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ wallet })
-            });
-
-            const data = await response.json();
-            
-            if (!data.success) {
-                alert(data.message);
-                return;
-            }
-
-            // Start music and show main content
-            bgMusic.volume = 0.3;
-            bgMusic.play()
-                .then(() => {
-                    // Hide enter modal
-                    enterModal.style.display = 'none';
-                    // Show main content
-                    mainContent.style.display = 'block';
-                    soundControl.style.display = 'block';
-                    // Initialize the rest of the page
-                    initializePage();
-                })
-                .catch(e => console.log('Audio playback failed:', e));
-        } catch (error) {
-            console.error('Error saving wallet:', error);
-            alert('Error saving wallet. Please try again.');
-        }
+    enterButton.addEventListener('click', function() {
+        // Start music
+        bgMusic.volume = 0.3;
+        bgMusic.play()
+            .then(() => {
+                // Hide enter modal
+                enterModal.style.display = 'none';
+                // Show main content
+                mainContent.style.display = 'block';
+                soundControl.style.display = 'block';
+                // Initialize the rest of the page
+                initializePage();
+            })
+            .catch(e => console.log('Audio playback failed:', e));
     });
 
     function toggleSound() {
@@ -140,58 +110,58 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sound toggle button
     soundToggle.addEventListener('click', toggleSound);
-});
 
-// Form submission handler
-const form = document.getElementById('subscribe-form');
-if (form) {
-    form.addEventListener('submit', async function(e) {
-        e.preventDefault();
-        const wallet = this.querySelector('input[type="text"]').value;
-        
-        try {
-            // Save wallet address
-            const response = await fetch('https://launchpumpboy.vercel.app/api/wallet', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ wallet }),
-            });
-
-            const result = await response.json();
+    // Handle wallet submission
+    const form = document.getElementById('subscribe-form');
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const wallet = this.querySelector('input[type="text"]').value;
             
-            if (!result.success) {
-                console.error('Error saving wallet:', result.message);
-            }
-        } catch (error) {
-            console.error('Error saving wallet:', error);
-        }
-        
-        // Show thank you popup
-        const thankYouPopup = document.getElementById('thankYouPopup');
-        if (thankYouPopup) {
-            thankYouPopup.style.display = 'block';
-            
-            // Add close button functionality
-            const closeBtn = document.querySelector('.thank-you-close-btn');
-            const closePopup = () => {
-                thankYouPopup.style.display = 'none';
-            };
+            try {
+                // Save wallet address
+                const response = await fetch('/api/wallets', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ wallet })
+                });
 
-            if (closeBtn) {
-                closeBtn.addEventListener('click', closePopup);
-            }
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Show thank you popup
+                    const thankYouPopup = document.getElementById('thankYouPopup');
+                    if (thankYouPopup) {
+                        thankYouPopup.style.display = 'block';
+                        
+                        // Add close button functionality
+                        const closeBtn = document.querySelector('.thank-you-close-btn');
+                        const closePopup = () => {
+                            thankYouPopup.style.display = 'none';
+                        };
 
-            // Close on outside click
-            thankYouPopup.addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closePopup();
+                        if (closeBtn) {
+                            closeBtn.addEventListener('click', closePopup);
+                        }
+
+                        // Close on outside click
+                        thankYouPopup.addEventListener('click', function(e) {
+                            if (e.target === this) {
+                                closePopup();
+                            }
+                        });
+                    }
+                    
+                    // Reset form
+                    this.reset();
+                } else {
+                    console.error('Error saving wallet:', data.message);
                 }
-            });
-        }
-        
-        // Reset form
-        this.reset();
-    });
-}
+            } catch (error) {
+                console.error('Error saving wallet:', error);
+            }
+        });
+    }
+});

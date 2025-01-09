@@ -597,28 +597,6 @@ button:hover {
     display: none;
 }
 
-.wallet-input {
-    width: 300px;
-    padding: 10px;
-    margin: 20px 0;
-    border: 2px solid #39FF14;
-    background: rgba(0, 0, 0, 0.8);
-    color: #39FF14;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 14px;
-    text-align: center;
-    outline: none;
-    border-radius: 5px;
-}
-
-.wallet-input::placeholder {
-    color: rgba(57, 255, 20, 0.5);
-}
-
-.wallet-input:focus {
-    box-shadow: 0 0 10px #39FF14;
-}
-
 @media (max-width: 600px) {
     .game-boy {
         width: 100%;
