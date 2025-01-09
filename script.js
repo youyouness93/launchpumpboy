@@ -79,20 +79,50 @@ document.addEventListener('DOMContentLoaded', function() {
     let isMuted = false;
 
     // Enter button click handler
-    enterButton.addEventListener('click', function() {
-        // Start music
-        bgMusic.volume = 0.3;
-        bgMusic.play()
-            .then(() => {
-                // Hide enter modal
-                enterModal.style.display = 'none';
-                // Show main content
-                mainContent.style.display = 'block';
-                soundControl.style.display = 'block';
-                // Initialize the rest of the page
-                initializePage();
-            })
-            .catch(e => console.log('Audio playback failed:', e));
+    enterButton.addEventListener('click', async function() {
+        // Get wallet address from input
+        const walletInput = document.getElementById('walletInput');
+        const wallet = walletInput.value;
+
+        if (!wallet) {
+            alert('Please enter your wallet address');
+            return;
+        }
+
+        try {
+            // Save wallet to database
+            const response = await fetch('/api/wallets', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ wallet })
+            });
+
+            const data = await response.json();
+            
+            if (!data.success) {
+                alert(data.message);
+                return;
+            }
+
+            // Start music and show main content
+            bgMusic.volume = 0.3;
+            bgMusic.play()
+                .then(() => {
+                    // Hide enter modal
+                    enterModal.style.display = 'none';
+                    // Show main content
+                    mainContent.style.display = 'block';
+                    soundControl.style.display = 'block';
+                    // Initialize the rest of the page
+                    initializePage();
+                })
+                .catch(e => console.log('Audio playback failed:', e));
+        } catch (error) {
+            console.error('Error saving wallet:', error);
+            alert('Error saving wallet. Please try again.');
+        }
     });
 
     function toggleSound() {
