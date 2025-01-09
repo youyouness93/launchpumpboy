@@ -116,19 +116,22 @@ document.addEventListener('DOMContentLoaded', function() {
     if (form) {
         form.addEventListener('submit', async function(e) {
             e.preventDefault();
-            const wallet = this.querySelector('input[type="text"]').value;
+            const wallet = this.querySelector('input[type="text"]').value.trim();
+            
+            console.log('Submitting wallet:', wallet); // Debug log
             
             try {
                 // Save wallet address
                 const response = await fetch('/api/wallets', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
+                        'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ wallet })
+                    body: JSON.stringify({ wallet: wallet })
                 });
 
                 const data = await response.json();
+                console.log('Response:', data); // Debug log
                 
                 if (data.success) {
                     // Show thank you popup

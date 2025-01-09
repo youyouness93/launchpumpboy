@@ -15,40 +15,40 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'POST') {
-      console.log('Received POST request with body:', req.body)
+      console.log('Received request body:', req.body); // Debug log
       
       // Get wallet address from request body
       const { wallet } = req.body
 
       // Validate wallet address
-      if (!wallet || !/^[A-HJ-NP-Za-km-z1-9]{32,44}$/.test(wallet)) {
-        console.log('Invalid wallet address provided')
+      if (!wallet) {
+        console.log('No wallet provided'); // Debug log
         return res.status(400).json({
           success: false,
-          message: 'Invalid wallet address format'
+          message: 'No wallet address provided'
         })
       }
 
       try {
-        console.log('Attempting to save wallet:', wallet)
+        console.log('Saving wallet:', wallet); // Debug log
         // Save wallet to database
         const savedWallet = await prisma.wallet.create({
           data: {
             address: wallet
           }
         })
-        console.log('Wallet saved successfully:', savedWallet)
+        console.log('Wallet saved:', savedWallet); // Debug log
 
-        return res.json({
+        return res.status(200).json({
           success: true,
           message: 'Wallet address saved successfully',
           wallet: savedWallet
         })
       } catch (error) {
-        console.error('Error saving wallet:', error)
+        console.error('Database error:', error); // Debug log
         // Handle unique constraint violation
         if (error.code === 'P2002') {
-          return res.json({
+          return res.status(200).json({
             success: false,
             message: 'Wallet address already registered'
           })
@@ -56,14 +56,12 @@ export default async function handler(req, res) {
         throw error
       }
     } else if (req.method === 'GET') {
-      console.log('Fetching all wallets')
       const wallets = await prisma.wallet.findMany({
         orderBy: {
           timestamp: 'desc'
         }
       })
-      console.log('Found wallets:', wallets)
-      return res.json({
+      return res.status(200).json({
         success: true,
         wallets
       })
@@ -75,10 +73,10 @@ export default async function handler(req, res) {
     })
   } catch (error) {
     console.error('API Error:', error)
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       message: 'Internal server error',
-      error: error.message 
+      error: error.message
     })
   }
 }
