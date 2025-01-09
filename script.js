@@ -6,52 +6,62 @@ function updateCountdown() {
     const now = new Date();
     const diff = launchDate - now;
 
-    if (diff <= 0) {
-        // Launch time reached
-        document.getElementById('days').textContent = '00';
-        document.getElementById('hours').textContent = '00';
-        document.getElementById('minutes').textContent = '00';
-        document.getElementById('seconds').textContent = '00';
-        return;
-    }
-
     const days = Math.floor(diff / (1000 * 60 * 60 * 24));
     const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-    document.getElementById('days').textContent = String(days).padStart(2, '0');
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    document.getElementById('days').innerText = String(days).padStart(2, '0');
+    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
+    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
 }
 
-// Matrix rain effect
+// Create matrix rain effect
 function createMatrixRain() {
-    const matrixBg = document.querySelector('.matrix-bg');
-    
-    for (let i = 0; i < 100; i++) {
-        const line = document.createElement('div');
-        line.className = 'matrix-line';
-        line.style.left = `${Math.random() * 100}%`;
-        line.style.animationDuration = `${Math.random() * 3 + 2}s`;
-        line.style.opacity = Math.random() * 0.5 + 0.5;
-        
-        const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
-        for (let j = 0; j < 30; j++) {
-            const char = document.createElement('div');
-            char.textContent = chars.charAt(Math.floor(Math.random() * chars.length));
-            char.style.color = '#39ff14';
-            char.style.fontSize = '14px';
-            char.style.marginBottom = '5px';
-            char.style.transform = Math.random() > 0.5 ? 'scale(1.2)' : 'scale(1)';
-            line.appendChild(char);
-        }
-        
-        matrixBg.appendChild(line);
+    const c = document.createElement('canvas');
+    const ctx = c.getContext('2d');
+    document.querySelector('.matrix-bg').appendChild(c);
+
+    c.height = window.innerHeight;
+    c.width = window.innerWidth;
+
+    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+    const font_size = 10;
+    const columns = c.width / font_size;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
     }
+
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+        ctx.fillRect(0, 0, c.width, c.height);
+
+        ctx.fillStyle = "#39FF14";
+        ctx.font = font_size + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+
+            if (drops[i] * font_size > c.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 35);
+
+    window.addEventListener('resize', () => {
+        c.height = window.innerHeight;
+        c.width = window.innerWidth;
+    });
 }
 
+// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     const enterModal = document.getElementById('enterModal');
     const enterButton = document.getElementById('enterButton');
@@ -93,81 +103,62 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Sound toggle button
     soundToggle.addEventListener('click', toggleSound);
+});
 
-    function initializePage() {
-        // Start countdown
-        setInterval(updateCountdown, 1000);
-        // Create matrix effect
-        createMatrixRain();
-
-        // Initialize other interactive elements
-        document.querySelectorAll('.button').forEach(button => {
-            button.addEventListener('mousedown', () => {
-                button.style.transform = 'scale(0.95)';
+// Form submission handler
+const form = document.getElementById('subscribe-form');
+if (form) {
+    form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const wallet = this.querySelector('input[type="text"]').value;
+        
+        try {
+            // Save wallet address
+            const response = await fetch('http://localhost:3001/api/wallet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ wallet }),
             });
-            button.addEventListener('mouseup', () => {
-                button.style.transform = 'scale(1)';
-            });
-        });
 
-        // Form submission
-        const form = document.getElementById('subscribe-form');
-        if (form) {
-            form.addEventListener('submit', function(e) {
-                e.preventDefault();
-                const email = this.querySelector('input[type="email"]').value;
-                
-                // Show thank you popup
-                const thankYouPopup = document.getElementById('thankYouPopup');
-                thankYouPopup.style.display = 'block';
-                
-                // Reset form
-                this.reset();
-
-                // Add close button functionality
-                const closeBtn = document.querySelector('.thank-you-close-btn');
-                const closePopup = () => {
-                    thankYouPopup.style.display = 'none';
-                };
-
-                closeBtn.addEventListener('click', closePopup);
-                thankYouPopup.addEventListener('click', function(e) {
-                    if (e.target === this) {
-                        closePopup();
-                    }
-                });
-            });
+            const result = await response.json();
+            
+            if (!result.success) {
+                console.error('Error saving wallet:', result.message);
+            }
+        } catch (error) {
+            console.error('Error saving wallet:', error);
         }
+        
+        // Show thank you popup
+        const thankYouPopup = document.getElementById('thankYouPopup');
+        if (thankYouPopup) {
+            thankYouPopup.style.display = 'block';
+            
+            // Add close button functionality
+            const closeBtn = document.querySelector('.thank-you-close-btn');
+            const closePopup = () => {
+                thankYouPopup.style.display = 'none';
+            };
 
-        // Modal functionality
-        const modal = document.getElementById('infoModal');
-        const dPad = document.querySelector('.d-pad');
-        const closeBtn = document.querySelector('.close-btn');
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closePopup);
+            }
 
-        if (dPad && modal && closeBtn) {
-            dPad.addEventListener('click', () => {
-                console.log('D-pad clicked');
-                modal.style.display = 'block';
-                document.body.style.overflow = 'hidden';
-            });
-
-            closeBtn.addEventListener('click', () => {
-                modal.style.display = 'none';
-                document.body.style.overflow = 'auto';
-            });
-
-            window.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.display = 'none';
-                    document.body.style.overflow = 'auto';
+            // Close on outside click
+            thankYouPopup.addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closePopup();
                 }
             });
-        } else {
-            console.error('Modal elements not found:', {
-                modal: !!modal,
-                dPad: !!dPad,
-                closeBtn: !!closeBtn
-            });
         }
-    }
-});
+        
+        // Reset form
+        this.reset();
+    });
+}
+
+// Start countdown and matrix effect
+setInterval(updateCountdown, 1000);
+createMatrixRain();

@@ -13,5 +13,10 @@ Thumbs.db
 *.swp
 *.swo
 
+# Node.js files
+node_modules/
+.env
+.vercel
+
 # Logs
 *.log
