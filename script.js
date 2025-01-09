@@ -17,58 +17,23 @@ function updateCountdown() {
     document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
 }
 
-// Create matrix rain effect
-function createMatrixRain() {
-    const c = document.createElement('canvas');
-    const ctx = c.getContext('2d');
-    document.querySelector('.matrix-bg').appendChild(c);
+// Toggle sound
+function toggleSound() {
+    const bgMusic = document.getElementById('bgMusic');
+    const soundToggle = document.getElementById('soundToggle');
+    const icon = soundToggle.querySelector('i');
 
-    c.height = window.innerHeight;
-    c.width = window.innerWidth;
-
-    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
-    const font_size = 10;
-    const columns = c.width / font_size;
-    const drops = [];
-
-    for (let x = 0; x < columns; x++) {
-        drops[x] = 1;
+    if (bgMusic.paused) {
+        bgMusic.play();
+        icon.classList.remove('fa-volume-mute');
+        icon.classList.add('fa-volume-up');
+    } else {
+        bgMusic.pause();
+        icon.classList.remove('fa-volume-up');
+        icon.classList.add('fa-volume-mute');
     }
-
-    function draw() {
-        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
-        ctx.fillRect(0, 0, c.width, c.height);
-
-        ctx.fillStyle = "#39FF14";
-        ctx.font = font_size + "px monospace";
-
-        for (let i = 0; i < drops.length; i++) {
-            const text = matrix[Math.floor(Math.random() * matrix.length)];
-            ctx.fillText(text, i * font_size, drops[i] * font_size);
-
-            if (drops[i] * font_size > c.height && Math.random() > 0.975) {
-                drops[i] = 0;
-            }
-            drops[i]++;
-        }
-    }
-
-    setInterval(draw, 35);
-
-    window.addEventListener('resize', () => {
-        c.height = window.innerHeight;
-        c.width = window.innerWidth;
-    });
 }
 
-// Initialize page
-function initializePage() {
-    // Start countdown and matrix effect
-    setInterval(updateCountdown, 1000);
-    createMatrixRain();
-}
-
-// Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     const enterModal = document.getElementById('enterModal');
     const enterButton = document.getElementById('enterButton');
@@ -77,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const bgMusic = document.getElementById('bgMusic');
     const soundToggle = document.getElementById('soundToggle');
     let isMuted = false;
+
+    // Start countdown
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
 
     // Enter button click handler
     enterButton.addEventListener('click', function() {
@@ -89,24 +58,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Show main content
                 mainContent.style.display = 'block';
                 soundControl.style.display = 'block';
-                // Initialize the rest of the page
-                initializePage();
             })
             .catch(e => console.log('Audio playback failed:', e));
     });
-
-    function toggleSound() {
-        if (isMuted) {
-            bgMusic.volume = 0.3;
-            bgMusic.play()
-                .catch(e => console.log('Audio playback failed:', e));
-            soundToggle.classList.remove('muted');
-        } else {
-            bgMusic.pause();
-            soundToggle.classList.add('muted');
-        }
-        isMuted = !isMuted;
-    }
 
     // Sound toggle button
     soundToggle.addEventListener('click', toggleSound);
@@ -118,12 +72,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (infoButton && infoModal) {
         infoButton.addEventListener('click', function() {
+            console.log('Info button clicked'); // Debug log
             infoModal.style.display = 'block';
         });
 
         // Close button click
         if (closeBtn) {
             closeBtn.addEventListener('click', function() {
+                console.log('Close button clicked'); // Debug log
                 infoModal.style.display = 'none';
             });
         }
@@ -131,9 +87,15 @@ document.addEventListener('DOMContentLoaded', function() {
         // Click outside to close
         window.addEventListener('click', function(e) {
             if (e.target === infoModal) {
+                console.log('Clicked outside modal'); // Debug log
                 infoModal.style.display = 'none';
             }
         });
+    } else {
+        console.log('Info button or modal not found:', { 
+            infoButton: !!infoButton, 
+            infoModal: !!infoModal 
+        }); // Debug log
     }
 
     // Handle wallet submission
@@ -143,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const wallet = this.querySelector('input[type="text"]').value.trim();
             
-            console.log('Submitting wallet:', wallet); // Debug log
+            console.log('Submitting wallet:', wallet);
             
             try {
                 // Save wallet address
@@ -156,7 +118,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
 
                 const data = await response.json();
-                console.log('Response:', data); // Debug log
+                console.log('Response:', data);
                 
                 if (data.success) {
                     // Show thank you popup
