@@ -10,7 +10,9 @@ const port = process.env.PORT || 3001;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname));
+
+// Serve static files
+app.use(express.static(path.join(__dirname)));
 
 // Basic auth middleware
 const basicAuth = (req, res, next) => {
@@ -51,11 +53,6 @@ pool.query('SELECT NOW()', (err, result) => {
     } else {
         console.log('Successfully connected to database');
     }
-});
-
-// Admin route
-app.get('/admin', basicAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'admin.html'));
 });
 
 // API endpoint to save wallet
@@ -115,19 +112,26 @@ app.get('/api/wallets', basicAuth, async (req, res) => {
     }
 });
 
-// Catch-all route for debugging
-app.use('*', (req, res) => {
-    console.log('404 - Route not found:', req.originalUrl);
-    res.status(404).json({ 
-        success: false, 
-        message: 'Route not found' 
-    });
+// Admin route
+app.get('/admin', basicAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, 'admin.html'));
+});
+
+// Root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+// Catch-all route for static files
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, req.path));
 });
 
 // Start server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
     console.log('Available routes:');
+    console.log('- GET / (main page)');
     console.log('- POST /api/wallet');
     console.log('- GET /api/wallets (protected)');
     console.log('- GET /admin (protected)');
