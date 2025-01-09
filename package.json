@@ -1,8 +1,8 @@
 {
   "name": "pumpboy-launch",
   "version": "1.0.0",
-  "description": "PumpBoy Launch Page with PostgreSQL storage",
-  "main": "server.js",
+  "description": "PumpBoy Launch Page",
+  "main": "index.js",
   "scripts": {
     "start": "node server.js",
     "vercel-build": "node db/init.js"
