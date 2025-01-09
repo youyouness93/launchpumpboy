@@ -272,28 +272,29 @@ button:hover {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
     z-index: 1000;
+    backdrop-filter: blur(5px);
+    overflow-y: hidden;
 }
 
 .modal-content {
     position: relative;
     background-color: #000;
-    margin: 5% auto;
-    padding: 20px;
+    margin: 50px auto;
+    padding: 30px;
     width: 90%;
-    max-width: 600px;
+    max-width: 800px;
     border: 2px solid var(--neon-green);
     box-shadow: 0 0 20px var(--neon-green);
     border-radius: 10px;
+    color: #fff;
     animation: modalFadeIn 0.3s ease-out;
-    max-height: 90vh;
-    overflow-y: auto;
 }
 
 .close-btn {
     position: absolute;
     right: 20px;
-    top: 20px;
-    font-size: 24px;
+    top: 15px;
+    font-size: 28px;
     color: var(--neon-green);
     cursor: pointer;
     transition: transform 0.3s ease;
@@ -305,31 +306,32 @@ button:hover {
 
 .modal h2 {
     color: var(--neon-green);
+    font-size: 2em;
     margin-bottom: 20px;
     text-align: center;
 }
 
-.modal-section {
-    margin-bottom: 30px;
-}
-
-.modal-section h3 {
+.modal h3 {
     color: var(--neon-green);
-    margin-bottom: 15px;
+    font-size: 1.5em;
+    margin: 30px 0 20px;
 }
 
-.modal-section p {
-    color: #fff;
+.modal-section {
+    margin: 20px 0;
+}
+
+.description p {
     line-height: 1.6;
-    font-size: 0.8em;
+    margin-bottom: 20px;
 }
 
 .phase {
-    margin-bottom: 20px;
+    margin: 25px 0;
     padding: 15px;
     border: 1px solid var(--neon-green);
     border-radius: 5px;
-    background-color: rgba(57, 255, 20, 0.1);
+    background: rgba(57, 255, 20, 0.05);
 }
 
 .phase h4 {
@@ -338,46 +340,53 @@ button:hover {
 }
 
 .phase ul {
-    list-style-type: none;
+    list-style: none;
     padding-left: 20px;
 }
 
 .phase li {
-    color: #fff;
-    font-size: 0.8em;
-    margin-bottom: 8px;
+    margin: 10px 0;
     position: relative;
+    color: #fff;
 }
 
 .phase li:before {
     content: ">";
     color: var(--neon-green);
     position: absolute;
-    left: -15px;
+    left: -20px;
 }
 
 .modal-footer {
+    margin-top: 30px;
     text-align: center;
-    margin-top: 20px;
     padding-top: 20px;
-    border-top: 1px solid var(--neon-green);
+    border-top: 1px solid rgba(57, 255, 20, 0.3);
 }
 
 .twitter-link {
     display: inline-flex;
     align-items: center;
     gap: 10px;
+    padding: 12px 24px;
+    background: rgba(57, 255, 20, 0.1);
+    border: 1px solid var(--neon-green);
+    border-radius: 50px;
     color: var(--neon-green);
     text-decoration: none;
-    padding: 10px 20px;
-    border: 1px solid var(--neon-green);
-    border-radius: 5px;
+    font-size: 1.1em;
     transition: all 0.3s ease;
 }
 
 .twitter-link:hover {
-    background-color: var(--neon-green);
+    background: var(--neon-green);
     color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 0 15px var(--neon-green);
+}
+
+.twitter-link i {
+    font-size: 1.2em;
 }
 
 @keyframes modalFadeIn {
