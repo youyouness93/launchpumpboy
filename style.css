@@ -226,6 +226,42 @@ button:hover {
     text-shadow: 0 0 5px var(--neon-green);
 }
 
+.sound-control {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+}
+
+.sound-btn {
+    background: none;
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 18px;
+    padding: 0;
+}
+
+.sound-btn:hover {
+    background: rgba(57, 255, 20, 0.1);
+    transform: scale(1.1);
+}
+
+.sound-btn.muted {
+    opacity: 0.7;
+}
+
+.sound-btn.muted i::before {
+    content: "\f6a9";  /* Font Awesome volume muted icon */
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -358,6 +394,117 @@ button:hover {
 
 .twitter-link i {
     font-size: 1.2em;
+}
+
+/* Enter Modal */
+.enter-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.enter-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.enter-logo {
+    max-width: 300px;
+    height: auto;
+    animation: pulsate 2s infinite;
+    filter: drop-shadow(0 0 10px var(--neon-green));
+    margin: 0;
+}
+
+@keyframes pulsate {
+    0% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px var(--neon-green));
+    }
+    50% { 
+        transform: scale(1.02);
+        filter: drop-shadow(0 0 15px var(--neon-green));
+    }
+    100% { 
+        transform: scale(1);
+        filter: drop-shadow(0 0 10px var(--neon-green));
+    }
+}
+
+.enter-button {
+    background: none;
+    border: 2px solid var(--neon-green);
+    color: var(--neon-green);
+    padding: 15px 40px;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1.2em;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.enter-button:hover {
+    background: rgba(57, 255, 20, 0.1);
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--neon-green);
+}
+
+.button-glitch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--neon-green);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.enter-button:hover .button-glitch {
+    animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+    0% { 
+        transform: translate(0);
+        opacity: 0;
+    }
+    20% { 
+        transform: translate(-5px, 5px);
+        opacity: 0.1;
+    }
+    40% { 
+        transform: translate(5px, -5px);
+        opacity: 0;
+    }
+    60% { 
+        transform: translate(-5px, -5px);
+        opacity: 0.1;
+    }
+    80% { 
+        transform: translate(5px, 5px);
+        opacity: 0;
+    }
+    100% { 
+        transform: translate(0);
+        opacity: 0;
+    }
+}
+
+/* Hide main content initially */
+.container, .sound-control {
+    display: none;
 }
 
 @media (max-width: 600px) {

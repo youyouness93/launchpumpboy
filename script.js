@@ -53,59 +53,103 @@ function createMatrixRain() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Modal functionality
-    const modal = document.getElementById('infoModal');
-    const dPad = document.querySelector('.d-pad');
-    const closeBtn = document.querySelector('.close-btn');
+    const enterModal = document.getElementById('enterModal');
+    const enterButton = document.getElementById('enterButton');
+    const mainContent = document.querySelector('.container');
+    const soundControl = document.querySelector('.sound-control');
+    const bgMusic = document.getElementById('bgMusic');
+    const soundToggle = document.getElementById('soundToggle');
+    let isMuted = false;
 
-    if (dPad && modal && closeBtn) {
-        dPad.addEventListener('click', () => {
-            console.log('D-pad clicked');
-            modal.style.display = 'block';
-            document.body.style.overflow = 'hidden';
+    // Enter button click handler
+    enterButton.addEventListener('click', function() {
+        // Start music
+        bgMusic.volume = 0.3;
+        bgMusic.play()
+            .then(() => {
+                // Hide enter modal
+                enterModal.style.display = 'none';
+                // Show main content
+                mainContent.style.display = 'block';
+                soundControl.style.display = 'block';
+                // Initialize the rest of the page
+                initializePage();
+            })
+            .catch(e => console.log('Audio playback failed:', e));
+    });
+
+    function toggleSound() {
+        if (isMuted) {
+            bgMusic.volume = 0.3;
+            bgMusic.play()
+                .catch(e => console.log('Audio playback failed:', e));
+            soundToggle.classList.remove('muted');
+        } else {
+            bgMusic.pause();
+            soundToggle.classList.add('muted');
+        }
+        isMuted = !isMuted;
+    }
+
+    // Sound toggle button
+    soundToggle.addEventListener('click', toggleSound);
+
+    function initializePage() {
+        // Start countdown
+        setInterval(updateCountdown, 1000);
+        // Create matrix effect
+        createMatrixRain();
+
+        // Initialize other interactive elements
+        document.querySelectorAll('.button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
         });
 
-        closeBtn.addEventListener('click', () => {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-        });
+        // Form submission
+        const form = document.getElementById('subscribe-form');
+        if (form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                alert('Thank you for subscribing! We will notify you when we launch.');
+                this.reset();
+            });
+        }
 
-        window.addEventListener('click', (e) => {
-            if (e.target === modal) {
+        // Modal functionality
+        const modal = document.getElementById('infoModal');
+        const dPad = document.querySelector('.d-pad');
+        const closeBtn = document.querySelector('.close-btn');
+
+        if (dPad && modal && closeBtn) {
+            dPad.addEventListener('click', () => {
+                console.log('D-pad clicked');
+                modal.style.display = 'block';
+                document.body.style.overflow = 'hidden';
+            });
+
+            closeBtn.addEventListener('click', () => {
                 modal.style.display = 'none';
                 document.body.style.overflow = 'auto';
-            }
-        });
-    } else {
-        console.error('Modal elements not found:', {
-            modal: !!modal,
-            dPad: !!dPad,
-            closeBtn: !!closeBtn
-        });
+            });
+
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        } else {
+            console.error('Modal elements not found:', {
+                modal: !!modal,
+                dPad: !!dPad,
+                closeBtn: !!closeBtn
+            });
+        }
     }
-
-    // Form submission
-    const form = document.getElementById('subscribe-form');
-    if (form) {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = this.querySelector('input[type="email"]').value;
-            alert('Thank you for subscribing! We will notify you when we launch.');
-            this.reset();
-        });
-    }
-
-    // Initialize countdown and matrix
-    setInterval(updateCountdown, 1000);
-    createMatrixRain();
-
-    // Add button interactivity
-    document.querySelectorAll('.button').forEach(button => {
-        button.addEventListener('mousedown', () => {
-            button.style.transform = 'scale(0.95)';
-        });
-        button.addEventListener('mouseup', () => {
-            button.style.transform = 'scale(1)';
-        });
-    });
 });

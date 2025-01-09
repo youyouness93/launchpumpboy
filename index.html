@@ -11,7 +11,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
+    <div id="enterModal" class="enter-modal">
+        <div class="enter-content">
+            <img src="logo.png" alt="PumpBoy Logo" class="enter-logo">
+            <button id="enterButton" class="enter-button">
+                <span class="button-text">PRESS START</span>
+                <div class="button-glitch"></div>
+            </button>
+        </div>
+    </div>
     <div class="matrix-bg"></div>
+    <div class="sound-control">
+        <button id="soundToggle" class="sound-btn">
+            <i class="fas fa-volume-up"></i>
+        </button>
+    </div>
+    <audio id="bgMusic" loop>
+        <source src="Eric Skiff - Underclocked  NO COPYRIGHT 8-bit Music  Background.mp3" type="audio/mpeg">
+    </audio>
     <div class="container">
         <div class="game-boy">
             <div class="screen">
