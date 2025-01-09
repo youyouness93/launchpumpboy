@@ -17,6 +17,50 @@ function updateCountdown() {
     document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
 }
 
+// Create matrix rain effect
+function createMatrixRain() {
+    const c = document.createElement('canvas');
+    const ctx = c.getContext('2d');
+    document.querySelector('.matrix-bg').appendChild(c);
+
+    c.height = window.innerHeight;
+    c.width = window.innerWidth;
+
+    const matrix = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*()*&^%";
+    const font_size = 10;
+    const columns = c.width / font_size;
+    const drops = [];
+
+    for (let x = 0; x < columns; x++) {
+        drops[x] = 1;
+    }
+
+    function draw() {
+        ctx.fillStyle = "rgba(0, 0, 0, 0.04)";
+        ctx.fillRect(0, 0, c.width, c.height);
+
+        ctx.fillStyle = "#39FF14";
+        ctx.font = font_size + "px monospace";
+
+        for (let i = 0; i < drops.length; i++) {
+            const text = matrix[Math.floor(Math.random() * matrix.length)];
+            ctx.fillText(text, i * font_size, drops[i] * font_size);
+
+            if (drops[i] * font_size > c.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        }
+    }
+
+    setInterval(draw, 35);
+
+    window.addEventListener('resize', () => {
+        c.height = window.innerHeight;
+        c.width = window.innerWidth;
+    });
+}
+
 // Toggle sound
 function toggleSound() {
     const bgMusic = document.getElementById('bgMusic');
@@ -46,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start countdown
     setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    // Create matrix effect
+    createMatrixRain();
 
     // Enter button click handler
     enterButton.addEventListener('click', function() {
