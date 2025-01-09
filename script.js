@@ -116,8 +116,26 @@ document.addEventListener('DOMContentLoaded', function() {
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 const email = this.querySelector('input[type="email"]').value;
-                alert('Thank you for subscribing! We will notify you when we launch.');
+                
+                // Show thank you popup
+                const thankYouPopup = document.getElementById('thankYouPopup');
+                thankYouPopup.style.display = 'block';
+                
+                // Reset form
                 this.reset();
+
+                // Add close button functionality
+                const closeBtn = document.querySelector('.thank-you-close-btn');
+                const closePopup = () => {
+                    thankYouPopup.style.display = 'none';
+                };
+
+                closeBtn.addEventListener('click', closePopup);
+                thankYouPopup.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        closePopup();
+                    }
+                });
             });
         }
 
